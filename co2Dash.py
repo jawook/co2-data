@@ -38,7 +38,6 @@ selMinPop = st.sidebar.number_input('Select the minimum population of country (i
 selRemX = st.sidebar.number_input('Select the number of countries to remove from top of highest per capita emitters',
                                   min_value=1, value=10, step=1)
 
-@st.cache
 def getdf(df, year, minpop):
     df = df[df['year'] == year]
     df = df[df['iso_code'] != '']
@@ -49,7 +48,8 @@ def getdf(df, year, minpop):
     return df
 
 yrDf = getdf(sourcedf, selYr, selMinPop)
-topX = yrDf.nlargest(10, 'co2_per_capita')
+cutoff = min(yrDf.nlargest(10, 'co2_per_capita')['co2_per_capita'])
+yrDf['topN'] = ['Top' if x >= cutoff else 'No' for x in yrDf['co2_per_capita']]
 
 st.markdown('#### CO<sub>2</sub> Emissions per Capita by Country in ' + str(selYr),
             unsafe_allow_html=True)
@@ -61,5 +61,4 @@ chrBarPerCap.update_yaxes(title='Total CO<sub>2</sub> Emissionse per Capita')
 chrBarPerCap.update_layout(margin={'l': 0, 't': 0, 'r': 0, 'b':0}, 
                            paper_bgcolor='rgba(0,0,0,0)',
                            plot_bgcolor='rgba(0,0,0,0)')
-chrBarPerCap.add_trace(go.Bar(x=topX['country'], y=topX['co2_per_capita']))
 st.plotly_chart(chrBarPerCap, use_container_width=True)
