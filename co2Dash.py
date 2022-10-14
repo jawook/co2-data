@@ -78,6 +78,7 @@ st.markdown('#### Total CO<sub>2</sub> Emissions by Country ' + str(selYr),
 chrTreeTotal = px.treemap(yrDf, values='co2', 
                           path=[px.Constant('All Included Countries'),
                                 'topN', 'iso_code'],
+                          id=,
                           color_discrete_sequence=clrs)
 chrTreeTotal.update_layout(uniformtext=dict(minsize=14, mode='hide'),
                            margin={'l': 0, 't': 0, 'r': 0, 'b':0})
