@@ -50,7 +50,7 @@ def getdf(df, year, minpop):
 
 yrDf = getdf(sourcedf, selYr, selMinPop)
 
-st.heading('CO<sub>2</sub> Emissions per Capita by Country in ' + str(selYr))
+st.header('CO<sub>2</sub> Emissions per Capita by Country in ' + str(selYr))
 chrBarPerCap = px.bar(yrDf, x='country', y='co2_per_capita', 
                       color_discrete_sequence=clrs)
 chrBarPerCap.update_xaxes(categoryorder='total descending', title=None)
