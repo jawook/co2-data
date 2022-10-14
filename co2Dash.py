@@ -22,6 +22,8 @@ selYr = st.sidebar.selectbox('Select the year for analysis:',
                              sorted(set(sourcedf['year']), reverse=True))
 selMinPop = st.sidebar.number_input('Select the minimum population of country (in millions):', 
                                     min_value=0, value=1, step=1)
+selRemX = st.sidebar.number_input('Select the number of countries to remove from top of highest per capita emitters',
+                                  min_value=1, value=10, step=1)
 
 @st.cache
 def get_yr(df, year):
