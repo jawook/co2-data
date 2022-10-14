@@ -50,7 +50,7 @@ def getdf(df, year, minpop):
 
 yrDf = getdf(sourcedf, selYr, selMinPop)
 cutoff = min(yrDf.nlargest(selRemX, 'co2_per_capita')['co2_per_capita'])
-yrDf['topN'] = ['Yes' if x >= cutoff else 'No' for x in yrDf['co2_per_capita']]
+yrDf['topN'] = ['Top '+ str(selRemX) if x >= cutoff else 'No' for x in yrDf['co2_per_capita']]
 
 st.markdown('#### CO<sub>2</sub> Emissions per Capita by Country in ' + str(selYr),
             unsafe_allow_html=True)
@@ -63,6 +63,7 @@ chrBarPerCap.update_layout(margin={'l': 0, 't': 0, 'r': 0, 'b':0},
                            paper_bgcolor='rgba(0,0,0,0)',
                            plot_bgcolor='rgba(0,0,0,0)',
                            showlegend=False)
+#chrBarPerCap.update_traces(hovertemplate=)
 st.plotly_chart(chrBarPerCap, use_container_width=True)
 
 chrPieTotal = px.pie(yrDf, values='co2', names='topN', color='country')
