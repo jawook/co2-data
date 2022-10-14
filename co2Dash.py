@@ -7,6 +7,8 @@ Created on Fri Oct 14 13:37:59 2022
 
 import pandas as pd
 import streamlit as st
+import plotly.express as px
+import plotly.graph_objects as go
 
 #%% retrieve data from OWID
 @st.cache
@@ -46,4 +48,5 @@ def getdf(df, year, minpop):
 
 yrDf = getdf(sourcedf, selYr, selMinPop)
 
-st.dataframe(yrDf)
+chrBarPerCap = px.bar(yrDf, x='country', y='co2_per_capita')
+st.plotly_chart(chrBarPerCap)
