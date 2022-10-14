@@ -52,5 +52,5 @@ yrDf = getdf(sourcedf, selYr, selMinPop)
 
 chrBarPerCap = px.bar(yrDf, x='country', y='co2_per_capita', 
                       color_discrete_sequence=clrs)
-chrBarPerCap.update_xaxes(categoryorder='total descending')
+chrBarPerCap.update_xaxes(categoryorder='total descending', title=None)
 st.plotly_chart(chrBarPerCap, use_container_width=True)
