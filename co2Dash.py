@@ -49,8 +49,11 @@ def getdf(df, year, minpop):
     return newdf
 
 yrDf = getdf(sourcedf, selYr, selMinPop)
+numCountry = yrDf['country'].nunique()
 cutoff = min(yrDf.nlargest(selRemX, 'co2_per_capita')['co2_per_capita'])
-yrDf['topN'] = ['Top '+ str(selRemX) if x >= cutoff else 'No' for x in yrDf['co2_per_capita']]
+yrDf['topN'] = ['Top '+ 
+                str(selRemX) if x >= cutoff else 'Bottom' + 
+                str(numCountry-selRemX) for x in yrDf['co2_per_capita']]
 
 st.markdown('#### CO<sub>2</sub> Emissions per Capita by Country in ' + str(selYr),
             unsafe_allow_html=True)
