@@ -50,9 +50,9 @@ def getdf(df, year, minpop):
 
 yrDf = getdf(sourcedf, selYr, selMinPop)
 
-st.markdown('# CO<sub>2</sub> Emissions per Capita by Country in ' + str(selYr),
+st.markdown('#### CO<sub>2</sub> Emissions per Capita by Country in ' + str(selYr),
             unsafe_allow_html=True)
-st.markdown('#### _Top ' + str(selRemX) + ' to be removed highlighted in red_')
+st.markdown('###### _Top ' + str(selRemX) + ' to be removed highlighted in red_')
 chrBarPerCap = px.bar(yrDf, x='country', y='co2_per_capita', 
                       color_discrete_sequence=clrs)
 chrBarPerCap.update_xaxes(categoryorder='total descending', title=None)
