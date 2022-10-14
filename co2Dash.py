@@ -28,7 +28,7 @@ def loadRegions():
 
 regdf = loadRegions()
 sourcedf = pd.merge(left=sourcedf, right=regdf, left_on='iso_code', 
-                    right_on='alpha-3', how='inner')
+                    right_on='alpha-3', how='left')
 
 #%% sidebar inputs
 selYr = st.sidebar.selectbox('Select the year for analysis:', 
@@ -39,13 +39,14 @@ selRemX = st.sidebar.number_input('Select the number of countries to remove from
                                   min_value=1, value=10, step=1)
 
 def getdf(df, year, minpop):
-    df = df[df['year'] == year]
-    df = df[df['iso_code'] != '']
-    df = df[['country', 'year', 'iso_code', 'population', 'co2', 
+    newdf = df[df['year'] == year]
+    newdf = newdf[newdf['iso_code'] != '']
+    newdf = newdf[['country', 'year', 'iso_code', 'population', 'co2', 
              'co2_per_capita', 'region', 'sub-region']]
-    df = df[df['population'] >= minpop*1000000]
-    df = df[df['co2'].notna() & df['co2_per_capita'].notna() & df['iso_code'].notna()]
-    return df
+    newdf = newdf[newdf['population'] >= minpop*1000000]
+    newdf = newdf[newdf['co2'].notna() & newdf['co2_per_capita'].notna() & 
+                  newdf['iso_code'].notna()]
+    return newdf
 
 yrDf = getdf(sourcedf, selYr, selMinPop)
 cutoff = min(yrDf.nlargest(selRemX, 'co2_per_capita')['co2_per_capita'])
@@ -63,3 +64,7 @@ chrBarPerCap.update_layout(margin={'l': 0, 't': 0, 'r': 0, 'b':0},
                            plot_bgcolor='rgba(0,0,0,0)',
                            showlegend=False)
 st.plotly_chart(chrBarPerCap, use_container_width=True)
+
+chrPieTotal = px.pie(yrDf, values='co2', color='topN')
+st.plotly_chart(chrPieTotal, use_container_width=True)
+
