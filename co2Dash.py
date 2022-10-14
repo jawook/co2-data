@@ -57,7 +57,8 @@ yrDf['topN'] = ['Top '+
 
 st.markdown('#### CO<sub>2</sub> Emissions per Capita by Country in ' + str(selYr),
             unsafe_allow_html=True)
-st.markdown('###### _Top ' + str(selRemX) + ' to be removed highlighted in orange_')
+st.markdown('###### _Top ' + str(selRemX) + 
+            ' highlighted in orange; tonnes/year_')
 chrBarPerCap = px.bar(yrDf, x='country', y='co2_per_capita', color='topN',
                       color_discrete_sequence=clrs)
 chrBarPerCap.update_xaxes(categoryorder='total descending', title=None)
@@ -69,11 +70,11 @@ chrBarPerCap.update_layout(margin={'l': 0, 't': 0, 'r': 0, 'b':0},
 #chrBarPerCap.update_traces(hovertemplate=)
 st.plotly_chart(chrBarPerCap, use_container_width=True)
 
-chrPieTotal = px.pie(yrDf, values='co2', names='topN', color='country')
-st.plotly_chart(chrPieTotal, use_container_width=True)
-
+st.markdown('#### Total CO<sub>2</sub> Emissions by Country' + str(selYr),
+            unsafe_allow_html=True)
 chrTreeTotal = px.treemap(yrDf, values='co2', 
                           path=[px.Constant('All Included Countries'),
                                 'topN', 'country'],
                           color_discrete_sequence=clrs)
+chrTreeTotal.update_layout(uniformtext=dict(minsize=10, mode='hide'))
 st.plotly_chart(chrTreeTotal, use_container_width=True)
