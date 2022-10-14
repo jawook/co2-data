@@ -8,13 +8,23 @@ Created on Fri Oct 14 13:37:59 2022
 import pandas as pd
 import streamlit as st
 
-#%% retreive data from OWID
+#%% retrieve data from OWID
 @st.cache
-def load_data():
+def loadData():
     df = pd.read_csv('https://raw.githubusercontent.com/owid/co2-data/master/owid-co2-data.csv')
     return df
 
-sourcedf = load_data()
+sourcedf = loadData()
+
+#%% retrieve region data from github and merge to OWID data
+@st.cache
+def loadRegions():
+    df = pd.read_csv('https://github.com/lukes/ISO-3166-Countries-with-Regional-Codes/raw/master/all/all.csv')
+    return df
+
+regdf = loadRegions()
+sourcedf = pd.merge(left=sourcedf, right=regdf, left_on='iso_code', 
+                    right_on='alpha-3', how='outer')
 
 #%% sidebar inputs
 selYr = st.sidebar.selectbox('Select the year for analysis:', 
@@ -27,9 +37,12 @@ selRemX = st.sidebar.number_input('Select the number of countries to remove from
 @st.cache
 def get_yr(df, year):
     df = df[df['year'] == year]
-#    df = df[df['iso_code'] != '']
-    df = df[['country', 'year', 'iso_code', 'co2', 'co2_per_capita']]
+    df = df[df['iso_code'] != '']
+    df = df[['country', 'year', 'iso_code', 'population', 'co2', 
+             'co2_per_capita', 'region', 'sub-region']]
+    df = df[df['co2'].notna() & df['co2_per_capita'].notna() & df['iso_code'].notna()]
     return df
 
 yrDf = get_yr(sourcedf, selYr)
+
 st.dataframe(yrDf)
