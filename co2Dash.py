@@ -65,6 +65,6 @@ chrBarPerCap.update_layout(margin={'l': 0, 't': 0, 'r': 0, 'b':0},
                            showlegend=False)
 st.plotly_chart(chrBarPerCap, use_container_width=True)
 
-chrPieTotal = px.pie(yrDf, values='co2', names='country', color='topN')
+chrPieTotal = px.pie(yrDf, values='co2', names='topN', color='country')
 st.plotly_chart(chrPieTotal, use_container_width=True)
 
