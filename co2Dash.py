@@ -24,7 +24,7 @@ def loadRegions():
 
 regdf = loadRegions()
 sourcedf = pd.merge(left=sourcedf, right=regdf, left_on='iso_code', 
-                    right_on='alpha-3', how='outer')
+                    right_on='alpha-3', how='inner')
 
 #%% sidebar inputs
 selYr = st.sidebar.selectbox('Select the year for analysis:', 
@@ -35,14 +35,15 @@ selRemX = st.sidebar.number_input('Select the number of countries to remove from
                                   min_value=1, value=10, step=1)
 
 @st.cache
-def get_yr(df, year):
+def getdf(df, year, minpop):
     df = df[df['year'] == year]
     df = df[df['iso_code'] != '']
     df = df[['country', 'year', 'iso_code', 'population', 'co2', 
              'co2_per_capita', 'region', 'sub-region']]
+    df = df[df['population'] >= minpop*1000000]
     df = df[df['co2'].notna() & df['co2_per_capita'].notna() & df['iso_code'].notna()]
     return df
 
-yrDf = get_yr(sourcedf, selYr)
+yrDf = getdf(sourcedf, selYr, selMinPop)
 
 st.dataframe(yrDf)
