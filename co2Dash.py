@@ -79,5 +79,5 @@ chrTreeTotal = px.treemap(yrDf, values='co2',
                           color_discrete_sequence=clrs)
 chrTreeTotal.update_layout(uniformtext=dict(minsize=14, mode='hide'),
                            margin={'l': 0, 't': 0, 'r': 0, 'b':0})
-chrBarPerCap.update_traces(hovertemplate='<b>%{Label}</b><br>%{value}')
+chrTreeTotal.update_traces(hovertemplate='<b>%{Label}</b><br>%{value}')
 st.plotly_chart(chrTreeTotal, use_container_width=True)
