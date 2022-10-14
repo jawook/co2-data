@@ -57,6 +57,5 @@ chrBarPerCap = px.bar(yrDf, x='country', y='co2_per_capita',
                       color_discrete_sequence=clrs)
 chrBarPerCap.update_xaxes(categoryorder='total descending', title=None)
 chrBarPerCap.update_yaxes(title='Total CO<sub>2</sub> Emissionse per Capita')
+chrBarPerCap.update_layout(margin={'l': 0})
 st.plotly_chart(chrBarPerCap, use_container_width=True)
-
-#AAAAAA
