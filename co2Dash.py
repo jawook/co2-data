@@ -10,6 +10,8 @@ import streamlit as st
 import plotly.express as px
 import plotly.graph_objects as go
 
+clrs = px.colors.qualitative.T10
+
 #%% retrieve data from OWID
 @st.cache
 def loadData():
@@ -48,5 +50,6 @@ def getdf(df, year, minpop):
 
 yrDf = getdf(sourcedf, selYr, selMinPop)
 
-chrBarPerCap = px.bar(yrDf, x='country', y='co2_per_capita')
+chrBarPerCap = px.bar(yrDf, x='country', y='co2_per_capita', 
+                      color_discrete_sequence=clrs)
 st.plotly_chart(chrBarPerCap)
