@@ -68,3 +68,5 @@ st.plotly_chart(chrBarPerCap, use_container_width=True)
 chrPieTotal = px.pie(yrDf, values='co2', names='topN', color='country')
 st.plotly_chart(chrPieTotal, use_container_width=True)
 
+chrTreeTotal = px.treemap(yrDf, values='co2', parents='topN', color='topN', ids='country')
+st.plotly_chart(chrTreeTotal, use_container_width=True)
