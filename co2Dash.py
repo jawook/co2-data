@@ -76,5 +76,6 @@ chrTreeTotal = px.treemap(yrDf, values='co2',
                           path=[px.Constant('All Included Countries'),
                                 'topN', 'country'],
                           color_discrete_sequence=clrs)
-chrTreeTotal.update_layout(uniformtext=dict(minsize=14, mode='hide'))
+chrTreeTotal.update_layout(uniformtext=dict(minsize=14, mode='hide'),
+                           margin={'l': 0, 't': 0, 'r': 0, 'b':0})
 st.plotly_chart(chrTreeTotal, use_container_width=True)
