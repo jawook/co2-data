@@ -8,7 +8,7 @@ Created on Fri Oct 14 13:37:59 2022
 import pandas as pd
 import streamlit as st
 
-
+#%% retreive data from OWID
 @st.cache
 def load_data():
     df = pd.read_csv('https://raw.githubusercontent.com/owid/co2-data/master/owid-co2-data.csv')
@@ -17,7 +17,6 @@ def load_data():
 sourcedf = load_data()
 
 #%% sidebar inputs
-
 selYr = st.sidebar.selectbox('Select the year for analysis:', 
                              sorted(set(sourcedf['year']), reverse=True))
 selMinPop = st.sidebar.number_input('Select the minimum population of country (in millions):', 
@@ -28,9 +27,9 @@ selRemX = st.sidebar.number_input('Select the number of countries to remove from
 @st.cache
 def get_yr(df, year):
     df = df[df['year'] == year]
-    df = df[df['iso_code'] != '']
+#    df = df[df['iso_code'] != '']
     df = df[['country', 'year', 'iso_code', 'co2', 'co2_per_capita']]
     return df
 
-yrDf = get_yr(sourcedf, str(selYr))
+yrDf = get_yr(sourcedf, selYr)
 st.dataframe(yrDf)
