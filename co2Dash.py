@@ -35,7 +35,7 @@ selYr = st.sidebar.selectbox('Select the year for analysis:',
                              sorted(set(sourcedf['year']), reverse=True))
 selMinPop = st.sidebar.number_input('Select the minimum population of country (in millions):', 
                                     min_value=0, value=1, step=1)
-selRemX = st.sidebar.number_input('Select the number of countries to remove from top of highest per capita emitters',
+selRemX = st.sidebar.number_input('Select the number of top per capita emitters to highlight',
                                   min_value=1, value=10, step=1)
 
 def getdf(df, year, minpop):
@@ -50,6 +50,7 @@ def getdf(df, year, minpop):
 
 yrDf = getdf(sourcedf, selYr, selMinPop)
 numCountry = yrDf['country'].nunique()
+totEmissions = sum(yrDf)
 cutoff = min(yrDf.nlargest(selRemX, 'co2_per_capita')['co2_per_capita'])
 yrDf['topN'] = ['Top '+ 
                 str(selRemX) + ' per Capita' if x >= cutoff else 'Bottom ' + 
@@ -80,5 +81,5 @@ chrTreeTotal = px.treemap(yrDf, values='co2',
                           color_discrete_sequence=clrs)
 chrTreeTotal.update_layout(uniformtext=dict(minsize=14, mode='hide'),
                            margin={'l': 0, 't': 0, 'r': 0, 'b':0})
-chrTreeTotal.update_traces(hovertemplate='<b>%{label}</b><br>%{value:,.0f}')
+chrTreeTotal.update_traces(hovertemplate='<b>%{label}</b><br>%{value/totEmissions:,.4f}')
 st.plotly_chart(chrTreeTotal, use_container_width=True)
