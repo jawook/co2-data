@@ -71,7 +71,7 @@ chrBarPerCap.update_layout(margin={'l': 0, 't': 0, 'r': 0, 'b':0},
 chrBarPerCap.update_traces(hovertemplate='<b>%{x}</b><br>%{y}')
 st.plotly_chart(chrBarPerCap, use_container_width=True)
 
-st.markdown('#### Total CO<sub>2</sub> Emissions by Country' + str(selYr),
+st.markdown('#### Total CO<sub>2</sub> Emissions by Country ' + str(selYr),
             unsafe_allow_html=True)
 chrTreeTotal = px.treemap(yrDf, values='co2', 
                           path=[px.Constant('All Included Countries'),
