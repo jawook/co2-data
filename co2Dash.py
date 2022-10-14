@@ -28,5 +28,3 @@ def get_yr(df, year):
     return df
 
 df19 = get_yr(sourcedf, '2019')
-
-st.
