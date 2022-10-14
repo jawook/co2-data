@@ -18,7 +18,7 @@ sourcedf = load_data()
 
 #%% sidebar inputs
 
-selYr = st.sidebar.selectbox('Select the year for analysis:', sorted(set(sourcedf['year'])))
+selYr = st.sidebar.selectbox('Select the year for analysis:', sorted(set(sourcedf['year']), reverse=True))
 
 @st.cache
 def get_yr(df, year):
