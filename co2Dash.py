@@ -50,7 +50,7 @@ def getdf(df, year, minpop):
 
 yrDf = getdf(sourcedf, selYr, selMinPop)
 numCountry = yrDf['country'].nunique()
-totEmissions = sum(yrDf)
+totEmissions = sum(yrDf['co2'])
 cutoff = min(yrDf.nlargest(selRemX, 'co2_per_capita')['co2_per_capita'])
 yrDf['topN'] = ['Top '+ 
                 str(selRemX) + ' per Capita' if x >= cutoff else 'Bottom ' + 
