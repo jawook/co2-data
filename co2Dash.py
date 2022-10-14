@@ -32,4 +32,5 @@ def get_yr(df, year):
     df = df[['country', 'year', 'iso_code', 'co2', 'co2_per_capita']]
     return df
 
-df19 = get_yr(sourcedf, '2019')
+yrDf = get_yr(sourcedf, str(selYr))
+st.dataframe(yrDf)
