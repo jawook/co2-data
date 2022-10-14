@@ -68,7 +68,7 @@ chrBarPerCap.update_layout(margin={'l': 0, 't': 0, 'r': 0, 'b':0},
                            paper_bgcolor='rgba(0,0,0,0)',
                            plot_bgcolor='rgba(0,0,0,0)',
                            showlegend=False)
-chrBarPerCap.update_traces(hovertemplate='%{color}')
+chrBarPerCap.update_traces(hovertemplate='%{x}')
 st.plotly_chart(chrBarPerCap, use_container_width=True)
 
 st.markdown('#### Total CO<sub>2</sub> Emissions by Country' + str(selYr),
