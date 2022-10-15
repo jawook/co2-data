@@ -34,7 +34,7 @@ sourcedf = pd.merge(left=sourcedf, right=regdf, left_on='iso_code',
 selYr = st.sidebar.selectbox('Select the year for analysis:', 
                              sorted(set(sourcedf['year']), reverse=True))
 selMinPop = st.sidebar.number_input('Select the minimum population of country (in millions):', 
-                                    min_value=0, value=1, step=1)
+                                    min_value=0, value=0, step=1)
 selRemX = st.sidebar.number_input('Select the number of top per capita emitters to highlight',
                                   min_value=1, value=10, step=1)
 
@@ -56,32 +56,51 @@ yrDf['topN'] = ['Top '+
                 str(selRemX) + ' per Capita' if x >= cutoff else 'Bottom ' + 
                 str(numCountry-selRemX) + 
                 ' per Capita' for x in yrDf['co2_per_capita']]
+yrDf['pctTot'] = [x/totEmissions for x in yrDf['co2']]
+pctTopN = sum(yrDf[yrDf['topN']=='Top '+ str(selRemX) +
+                   ' per Capita']['pctTot'])
+
+if selMinPop == 0:
+    minTxt = 'Analysis includes countries of all populations'
+else:
+    minTxt = 'Analysis excludes countries with poplulations of less than ' + str(selMinPop) + ' million.'
+
+st.markdown('___')
+st.markdown('# In '+ str(selYr) + ' the top <font color="red">' + str(selRemX) + 
+            ' <font color="black"> per capita emitters account for <font color="red">' +
+            str(round(pctTopN*100)) + '% of total emissions', unsafe_allow_html=True)
+st.markdown('_' + minTxt + '_')
+st.markdown('___')
 
 st.markdown('#### CO<sub>2</sub> Emissions per Capita by Country in ' + str(selYr),
             unsafe_allow_html=True)
 st.markdown('###### _Top ' + str(selRemX) + 
             ' highlighted in orange; tonnes/year_')
-chrBarPerCap = px.bar(yrDf, x='country', y='co2_per_capita', color='topN',
-                      color_discrete_sequence=clrs)
-chrBarPerCap.update_xaxes(categoryorder='total descending', title=None)
-chrBarPerCap.update_yaxes(title='Total CO<sub>2</sub> Emissionse per Capita',
-                          tickformat='.1f')
+
+clrMap = {
+    'Top '+ str(selRemX) + ' per Capita': clrs[0],
+    'Bottom ' + str(numCountry-selRemX) + ' per Capita': clrs[1]}
+
+chrBarPerCap = px.bar(yrDf.nlargest(50, 'co2_per_capita'), y='country', x='co2_per_capita', color='topN',
+                      color_discrete_sequence=[clrs[1], clrs[0]], height=600)
+chrBarPerCap.update_xaxes(title=None, showticklabels=False)
+chrBarPerCap.update_yaxes(categoryorder='total ascending',
+                          title=None, dtick=1)
 chrBarPerCap.update_layout(margin={'l': 0, 't': 0, 'r': 0, 'b':0}, 
                            paper_bgcolor='rgba(0,0,0,0)',
                            plot_bgcolor='rgba(0,0,0,0)',
                            showlegend=False)
-chrBarPerCap.update_traces(hovertemplate='<b>%{x}</b><br>%{y}')
+chrBarPerCap.update_traces(hovertemplate='<b>%{y}</b><br>%{x:.1f}')
 st.plotly_chart(chrBarPerCap, use_container_width=True)
 
 st.markdown('#### Total CO<sub>2</sub> Emissions by Country ' + str(selYr),
             unsafe_allow_html=True)
 chrTreeTotal = px.treemap(yrDf, values='co2', 
                           path=[px.Constant('All Included Countries'),
-                                'topN', 'iso_code'],
-                          id=,
+                                'topN', 'country'],
                           color_discrete_sequence=clrs)
-chrTreeTotal.update_layout(uniformtext=dict(minsize=14, mode='hide'),
+chrTreeTotal.update_layout(uniformtext=dict(minsize=10, mode='hide'),
                            margin={'l': 0, 't': 0, 'r': 0, 'b':0})
-chrTreeTotal.update_traces(hovertemplate='<b>%{label}</b><br>%{value:,.0f}',
-                           textinfo='label+percent root')
+chrTreeTotal.update_traces(hovertemplate='<b>%{label}</b><br>%{value:,.0f}<br><i>%{percentRoot:.0%} of total</i>')
 st.plotly_chart(chrTreeTotal, use_container_width=True)
+
