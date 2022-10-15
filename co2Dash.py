@@ -75,7 +75,7 @@ st.markdown('___')
 st.markdown('#### CO<sub>2</sub> Emissions per Capita by Country in ' + str(selYr),
             unsafe_allow_html=True)
 st.markdown('###### _Top ' + str(selRemX) + 
-            ' highlighted in orange; tonnes/year_')
+            ' highlighted in orange; tonnes/year; chart shows the top 50 per capita emitters_')
 
 clrMap = {
     'Top '+ str(selRemX) + ' per Capita': clrs[0],
