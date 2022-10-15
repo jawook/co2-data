@@ -104,3 +104,5 @@ chrTreeTotal.update_layout(uniformtext=dict(minsize=10, mode='hide'),
 chrTreeTotal.update_traces(hovertemplate='<b>%{label}</b><br>%{value:,.0f}<br><i>%{percentRoot:.0%} of total</i>')
 st.plotly_chart(chrTreeTotal, use_container_width=True)
 
+st.markdown('_All data sources from Our World in Data_')
+
